@@ -7,6 +7,15 @@ const eslintConfig = defineConfig([
   ...nextVitals,
   ...nextTs,
   prettier,
+  {
+    rules: {
+      // Downgraded to a warning: our remaining cases are data-loading and
+      // external-store (IndexedDB) subscription effects that setState
+      // conditionally on changed inputs — not the render loops this rule
+      // targets. IndexedDB has no synchronous snapshot for useSyncExternalStore.
+      'react-hooks/set-state-in-effect': 'warn',
+    },
+  },
   // Override default ignores of eslint-config-next.
   globalIgnores([
     // Default ignores of eslint-config-next:
