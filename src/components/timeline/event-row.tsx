@@ -27,20 +27,32 @@ function describe(event: WataEvent): { icon: typeof Milk; title: string; detail:
   return { icon: Moon, title: 'Sleep', detail };
 }
 
-export function EventRow({ event }: { event: WataEvent }) {
+export function EventRow({
+  event,
+  onSelect,
+}: {
+  event: WataEvent;
+  onSelect: (e: WataEvent) => void;
+}) {
   const { icon: Icon, title, detail } = describe(event);
   return (
-    <li className="flex items-center gap-3 rounded-xl bg-card p-3">
-      <div className="flex size-10 shrink-0 items-center justify-center rounded-full bg-accent text-accent-foreground">
-        <Icon className="size-5" aria-hidden />
-      </div>
-      <div className="min-w-0 flex-1">
-        <p className="font-medium">{title}</p>
-        <p className="truncate text-sm text-muted-foreground">{detail}</p>
-      </div>
-      <time className="shrink-0 text-sm tabular-nums text-muted-foreground">
-        {format(new Date(event.started_at), 'h:mm a')}
-      </time>
+    <li>
+      <button
+        type="button"
+        onClick={() => onSelect(event)}
+        className="flex w-full items-center gap-3 rounded-xl bg-card p-3 text-left transition-colors hover:bg-accent active:scale-[0.99]"
+      >
+        <div className="flex size-10 shrink-0 items-center justify-center rounded-full bg-accent text-accent-foreground">
+          <Icon className="size-5" aria-hidden />
+        </div>
+        <div className="min-w-0 flex-1">
+          <p className="font-medium">{title}</p>
+          <p className="truncate text-sm text-muted-foreground">{detail}</p>
+        </div>
+        <time className="shrink-0 text-sm tabular-nums text-muted-foreground">
+          {format(new Date(event.started_at), 'h:mm a')}
+        </time>
+      </button>
     </li>
   );
 }

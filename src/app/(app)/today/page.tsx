@@ -1,13 +1,15 @@
 'use client';
 
-import { useMemo } from 'react';
+import { useMemo, useState } from 'react';
 import { Milk, Moon, Baby, Plus } from 'lucide-react';
 import { useAppData } from '@/providers/app-data';
 import { useEvents } from '@/hooks/use-events';
 import { eventsForDay, summarizeDay } from '@/lib/events/today';
+import { type WataEvent } from '@/lib/events/schemas';
 import { AddChildDialog } from '@/components/app/add-child-dialog';
 import { EventRow } from '@/components/timeline/event-row';
 import { RunningSleepCard } from '@/components/timeline/running-sleep-card';
+import { EditEventSheet } from '@/components/log/edit-event-sheet';
 import { Button } from '@/components/ui/button';
 import { Skeleton } from '@/components/ui/skeleton';
 
@@ -33,6 +35,7 @@ export default function TodayPage() {
   const { children, selectedChild, loading } = useAppData();
   const { events } = useEvents();
   const today = useMemo(() => new Date(), []);
+  const [editing, setEditing] = useState<WataEvent | null>(null);
 
   const childEvents = useMemo(
     () => (selectedChild ? events.filter((e) => e.child_id === selectedChild.id) : []),
@@ -96,11 +99,13 @@ export default function TodayPage() {
         ) : (
           <ul className="flex flex-col gap-2">
             {timeline.map((e) => (
-              <EventRow key={e.id} event={e} />
+              <EventRow key={e.id} event={e} onSelect={setEditing} />
             ))}
           </ul>
         )}
       </section>
+
+      <EditEventSheet event={editing} onOpenChange={(open) => !open && setEditing(null)} />
     </div>
   );
 }

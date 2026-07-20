@@ -10,47 +10,11 @@ import { nextFeedDefaults } from '@/lib/events/defaults';
 import { type FeedDetails, breastSides, feedMethods } from '@/lib/events/schemas';
 import { logEvent } from '@/lib/offline/local-repo';
 import { Button } from '@/components/ui/button';
-import { cn } from '@/lib/utils';
+import { Segmented } from '@/components/log/segmented';
 import { Dialog, DialogContent, DialogHeader, DialogTitle } from '@/components/ui/dialog';
 
 const METHOD_LABEL = { breast: 'Breast', bottle: 'Bottle', pump: 'Pump' } as const;
 const SIDE_LABEL = { left: 'Left', right: 'Right', both: 'Both' } as const;
-
-/** Segmented, large-target selector — one row of thumb-sized options. */
-function Segmented<T extends string>({
-  options,
-  value,
-  onChange,
-  labels,
-  label,
-}: {
-  options: readonly T[];
-  value: T;
-  onChange: (v: T) => void;
-  labels: Record<T, string>;
-  label: string;
-}) {
-  return (
-    <div role="group" aria-label={label} className="grid grid-cols-3 gap-2">
-      {options.map((opt) => (
-        <button
-          key={opt}
-          type="button"
-          aria-pressed={value === opt}
-          onClick={() => onChange(opt)}
-          className={cn(
-            'h-12 rounded-xl border text-base font-medium transition-colors',
-            value === opt
-              ? 'border-primary bg-primary text-primary-foreground'
-              : 'border-border bg-card text-foreground hover:bg-accent'
-          )}
-        >
-          {labels[opt]}
-        </button>
-      ))}
-    </div>
-  );
-}
 
 /**
  * The feed controls. Mounted fresh each time the sheet opens, so the smart

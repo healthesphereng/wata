@@ -80,6 +80,28 @@ export function softDeleteEvent(event: WataEvent, now: Date = new Date()): WataE
   });
 }
 
+/**
+ * Applies edits to an event and bumps updated_at so the change syncs (and wins
+ * last-write-wins). Re-validated against the schema, so an edit can never
+ * produce a details payload that doesn't match the kind.
+ */
+export function reviseEvent(
+  event: WataEvent,
+  changes: {
+    details?: unknown;
+    started_at?: string;
+    ended_at?: string | null;
+    note?: string | null;
+  },
+  now: Date = new Date()
+): WataEvent {
+  return eventSchema.parse({
+    ...event,
+    ...changes,
+    updated_at: now.toISOString(),
+  });
+}
+
 export const KIND_LABELS: Record<EventKind, string> = {
   feed: 'Feed',
   sleep: 'Sleep',

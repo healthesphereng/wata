@@ -2,6 +2,7 @@ import { describe, expect, it } from 'vitest';
 import {
   createDiaperEvent,
   createFeedEvent,
+  reviseEvent,
   softDeleteEvent,
   startSleepEvent,
   stopEvent,
@@ -46,6 +47,26 @@ describe('event factories', () => {
     const gone = softDeleteEvent(e);
     expect(gone.deleted_at).not.toBeNull();
     expect(gone.id).toBe(e.id);
+  });
+
+  it('revises an event and bumps updated_at', () => {
+    const e = createFeedEvent(
+      { ...ctx, details: { method: 'bottle', amount_ml: 60 } },
+      new Date('2026-07-20T08:00:00Z')
+    );
+    const revised = reviseEvent(
+      e,
+      { details: { method: 'bottle', amount_ml: 120 } },
+      new Date('2026-07-20T08:05:00Z')
+    );
+    expect(revised.id).toBe(e.id);
+    if (revised.kind === 'feed') expect(revised.details.amount_ml).toBe(120);
+    expect(revised.updated_at).toBe('2026-07-20T08:05:00.000Z');
+  });
+
+  it('rejects a revision whose details do not match the kind', () => {
+    const e = createFeedEvent({ ...ctx, details: { method: 'bottle', amount_ml: 60 } });
+    expect(() => reviseEvent(e, { details: { contents: 'wet' } })).toThrow();
   });
 });
 
