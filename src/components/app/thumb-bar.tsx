@@ -3,19 +3,29 @@
 import { useState } from 'react';
 import { Milk, Moon, Baby } from 'lucide-react';
 import { useAppData } from '@/providers/app-data';
+import { useEvents } from '@/hooks/use-events';
+import { findRunningSleep } from '@/lib/events/today';
 import { FeedSheet } from '@/components/log/feed-sheet';
 import { DiaperSheet } from '@/components/log/diaper-sheet';
+import { SleepSheet } from '@/components/log/sleep-sheet';
+import { cn } from '@/lib/utils';
 
 /**
- * Fixed bottom bar — the app's primary action surface, in thumb reach. Feed
- * and Diaper are live; Sleep lights up in its own increment. Buttons are 64px
- * tall for one-handed 3 AM taps.
+ * Fixed bottom bar — the app's primary action surface, in thumb reach. All
+ * three trackers are live. Buttons are 64px tall for one-handed 3 AM taps;
+ * Sleep glows while a timer is running.
  */
 export function ThumbBar() {
   const { selectedChild } = useAppData();
+  const { events } = useEvents();
   const [feedOpen, setFeedOpen] = useState(false);
   const [diaperOpen, setDiaperOpen] = useState(false);
+  const [sleepOpen, setSleepOpen] = useState(false);
   const disabled = !selectedChild;
+
+  const sleeping = selectedChild
+    ? Boolean(findRunningSleep(events.filter((e) => e.child_id === selectedChild.id)))
+    : false;
 
   return (
     <>
@@ -35,12 +45,17 @@ export function ThumbBar() {
 
         <button
           type="button"
-          disabled
-          aria-disabled
-          className="flex h-16 flex-col items-center justify-center gap-1 rounded-2xl border border-border bg-card font-medium text-muted-foreground opacity-50"
+          disabled={disabled}
+          onClick={() => setSleepOpen(true)}
+          className={cn(
+            'flex h-16 flex-col items-center justify-center gap-1 rounded-2xl border font-semibold transition active:scale-[0.98] disabled:opacity-40',
+            sleeping
+              ? 'border-primary/40 bg-primary/15 text-primary'
+              : 'border-border bg-card text-foreground'
+          )}
         >
           <Moon className="size-6" aria-hidden />
-          <span className="text-sm">Sleep</span>
+          <span className="text-sm">{sleeping ? 'Sleeping' : 'Sleep'}</span>
         </button>
 
         <button
@@ -56,6 +71,7 @@ export function ThumbBar() {
 
       <FeedSheet open={feedOpen} onOpenChange={setFeedOpen} />
       <DiaperSheet open={diaperOpen} onOpenChange={setDiaperOpen} />
+      <SleepSheet open={sleepOpen} onOpenChange={setSleepOpen} />
     </>
   );
 }

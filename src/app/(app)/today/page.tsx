@@ -7,6 +7,7 @@ import { useEvents } from '@/hooks/use-events';
 import { eventsForDay, summarizeDay } from '@/lib/events/today';
 import { AddChildDialog } from '@/components/app/add-child-dialog';
 import { EventRow } from '@/components/timeline/event-row';
+import { RunningSleepCard } from '@/components/timeline/running-sleep-card';
 import { Button } from '@/components/ui/button';
 import { Skeleton } from '@/components/ui/skeleton';
 
@@ -77,6 +78,8 @@ export default function TodayPage() {
 
   return (
     <div className="flex flex-1 flex-col gap-6 p-4">
+      {summary.runningSleep && <RunningSleepCard event={summary.runningSleep} />}
+
       <section aria-label="Today at a glance" className="grid grid-cols-3 gap-3">
         <StatTile icon={Milk} value={summary.feeds} label="feeds" />
         <StatTile icon={Moon} value={`${sleepHours}h ${sleepMins}m`} label="sleep" />
