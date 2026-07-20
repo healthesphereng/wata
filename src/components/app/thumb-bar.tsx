@@ -4,16 +4,17 @@ import { useState } from 'react';
 import { Milk, Moon, Baby } from 'lucide-react';
 import { useAppData } from '@/providers/app-data';
 import { FeedSheet } from '@/components/log/feed-sheet';
-import { cn } from '@/lib/utils';
+import { DiaperSheet } from '@/components/log/diaper-sheet';
 
 /**
- * Fixed bottom bar — the app's primary action surface, in thumb reach. Feed is
- * live; Sleep and Diaper light up in their own increments. Buttons are 64px
+ * Fixed bottom bar — the app's primary action surface, in thumb reach. Feed
+ * and Diaper are live; Sleep lights up in its own increment. Buttons are 64px
  * tall for one-handed 3 AM taps.
  */
 export function ThumbBar() {
   const { selectedChild } = useAppData();
   const [feedOpen, setFeedOpen] = useState(false);
+  const [diaperOpen, setDiaperOpen] = useState(false);
   const disabled = !selectedChild;
 
   return (
@@ -26,9 +27,7 @@ export function ThumbBar() {
           type="button"
           disabled={disabled}
           onClick={() => setFeedOpen(true)}
-          className={cn(
-            'flex h-16 flex-col items-center justify-center gap-1 rounded-2xl bg-primary font-semibold text-primary-foreground transition active:scale-[0.98] disabled:opacity-40'
-          )}
+          className="flex h-16 flex-col items-center justify-center gap-1 rounded-2xl bg-primary font-semibold text-primary-foreground transition active:scale-[0.98] disabled:opacity-40"
         >
           <Milk className="size-6" aria-hidden />
           <span className="text-sm">Feed</span>
@@ -46,9 +45,9 @@ export function ThumbBar() {
 
         <button
           type="button"
-          disabled
-          aria-disabled
-          className="flex h-16 flex-col items-center justify-center gap-1 rounded-2xl border border-border bg-card font-medium text-muted-foreground opacity-50"
+          disabled={disabled}
+          onClick={() => setDiaperOpen(true)}
+          className="flex h-16 flex-col items-center justify-center gap-1 rounded-2xl border border-border bg-card font-semibold text-foreground transition active:scale-[0.98] disabled:opacity-40"
         >
           <Baby className="size-6" aria-hidden />
           <span className="text-sm">Diaper</span>
@@ -56,6 +55,7 @@ export function ThumbBar() {
       </nav>
 
       <FeedSheet open={feedOpen} onOpenChange={setFeedOpen} />
+      <DiaperSheet open={diaperOpen} onOpenChange={setDiaperOpen} />
     </>
   );
 }
