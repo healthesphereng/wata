@@ -37,7 +37,7 @@ export function ThumbBar() {
           type="button"
           disabled={disabled}
           onClick={() => setFeedOpen(true)}
-          className="flex h-16 flex-col items-center justify-center gap-1 rounded-2xl bg-primary font-semibold text-primary-foreground transition active:scale-[0.98] disabled:opacity-40"
+          className="shadow-pill flex h-16 flex-col items-center justify-center gap-1 rounded-2xl bg-primary font-semibold text-primary-foreground transition active:scale-[0.98] disabled:opacity-40"
         >
           <Milk className="size-6" aria-hidden />
           <span className="text-sm">Feed</span>
@@ -48,10 +48,8 @@ export function ThumbBar() {
           disabled={disabled}
           onClick={() => setSleepOpen(true)}
           className={cn(
-            'flex h-16 flex-col items-center justify-center gap-1 rounded-2xl border font-semibold transition active:scale-[0.98] disabled:opacity-40',
-            sleeping
-              ? 'border-primary/40 bg-primary/15 text-primary'
-              : 'border-border bg-card text-foreground'
+            'flex h-16 flex-col items-center justify-center gap-1 rounded-2xl border border-transparent font-semibold transition active:scale-[0.98] disabled:opacity-40',
+            sleeping ? 'border-primary/40 bg-primary/15 text-primary' : 'bg-blue-soft/40 text-foreground'
           )}
         >
           <Moon className="size-6" aria-hidden />
@@ -62,7 +60,7 @@ export function ThumbBar() {
           type="button"
           disabled={disabled}
           onClick={() => setDiaperOpen(true)}
-          className="flex h-16 flex-col items-center justify-center gap-1 rounded-2xl border border-border bg-card font-semibold text-foreground transition active:scale-[0.98] disabled:opacity-40"
+          className="flex h-16 flex-col items-center justify-center gap-1 rounded-2xl border border-transparent bg-mint-soft/60 font-semibold text-foreground transition active:scale-[0.98] disabled:opacity-40"
         >
           <Baby className="size-6" aria-hidden />
           <span className="text-sm">Diaper</span>

@@ -25,10 +25,10 @@ export function Segmented<T extends string>({
           aria-pressed={value === opt}
           onClick={() => onChange(opt)}
           className={cn(
-            'h-12 rounded-xl border text-base font-medium transition-colors',
+            'h-12 rounded-full border border-transparent text-base font-semibold transition-colors',
             value === opt
-              ? 'border-primary bg-primary text-primary-foreground'
-              : 'border-border bg-card text-foreground hover:bg-accent'
+              ? 'bg-primary text-primary-foreground shadow-pill'
+              : 'bg-secondary text-foreground hover:bg-accent'
           )}
         >
           {labels[opt]}

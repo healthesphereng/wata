@@ -7,7 +7,7 @@
 @theme inline {
   --color-background: var(--background);
   --color-foreground: var(--foreground);
-  --font-sans: var(--font-sans);
+  --font-sans: var(--font-quicksand);
   --font-mono: var(--font-geist-mono);
   --font-heading: var(--font-sans);
   --color-sidebar-ring: var(--sidebar-ring);
@@ -35,10 +35,19 @@
   --color-secondary: var(--secondary);
   --color-primary-foreground: var(--primary-foreground);
   --color-primary: var(--primary);
+  --color-primary-deep: var(--primary-deep);
   --color-popover-foreground: var(--popover-foreground);
   --color-popover: var(--popover);
   --color-card-foreground: var(--card-foreground);
   --color-card: var(--card);
+  --color-mint: var(--mint);
+  --color-mint-soft: var(--mint-soft);
+  --color-pink: var(--pink);
+  --color-pink-deep: var(--pink-deep);
+  --color-blue-soft: var(--blue-soft);
+  --color-subtle: var(--subtle);
+  --shadow-soft: 0 12px 30px rgb(90 80 120 / 0.1);
+  --shadow-pill: 0 8px 20px rgb(142 130 204 / 0.35);
   --radius-sm: calc(var(--radius) * 0.6);
   --radius-md: calc(var(--radius) * 0.8);
   --radius-lg: var(--radius);
@@ -48,73 +57,92 @@
   --radius-4xl: calc(var(--radius) * 2.6);
 }
 
+/* Pastel nursery palette — warm ivory canvas, white cards, lavender primary,
+   mint/pink/blue accents. Light is the default; .dark is a night-nursery
+   variant on deep navy for 3 AM logging. */
 :root {
-  --background: oklch(1 0 0);
-  --foreground: oklch(0.145 0 0);
-  --card: oklch(1 0 0);
-  --card-foreground: oklch(0.145 0 0);
-  --popover: oklch(1 0 0);
-  --popover-foreground: oklch(0.145 0 0);
-  --primary: oklch(0.205 0 0);
-  --primary-foreground: oklch(0.985 0 0);
-  --secondary: oklch(0.97 0 0);
-  --secondary-foreground: oklch(0.205 0 0);
-  --muted: oklch(0.97 0 0);
-  --muted-foreground: oklch(0.556 0 0);
-  --accent: oklch(0.97 0 0);
-  --accent-foreground: oklch(0.205 0 0);
-  --destructive: oklch(0.577 0.245 27.325);
-  --border: oklch(0.922 0 0);
-  --input: oklch(0.922 0 0);
-  --ring: oklch(0.708 0 0);
-  --chart-1: oklch(0.87 0 0);
-  --chart-2: oklch(0.556 0 0);
-  --chart-3: oklch(0.439 0 0);
-  --chart-4: oklch(0.371 0 0);
-  --chart-5: oklch(0.269 0 0);
-  --radius: 0.625rem;
-  --sidebar: oklch(0.985 0 0);
-  --sidebar-foreground: oklch(0.145 0 0);
-  --sidebar-primary: oklch(0.205 0 0);
-  --sidebar-primary-foreground: oklch(0.985 0 0);
-  --sidebar-accent: oklch(0.97 0 0);
-  --sidebar-accent-foreground: oklch(0.205 0 0);
-  --sidebar-border: oklch(0.922 0 0);
-  --sidebar-ring: oklch(0.708 0 0);
+  --background: #f4efe9;
+  --foreground: #2c3149;
+  --card: #ffffff;
+  --card-foreground: #2c3149;
+  --popover: #ffffff;
+  --popover-foreground: #2c3149;
+  --primary: #8e82cc;
+  --primary-foreground: #ffffff;
+  --primary-deep: #7a6dbf;
+  --secondary: #f7f4fa;
+  --secondary-foreground: #2c3149;
+  --muted: #f7f4fa;
+  --muted-foreground: #6e7180;
+  --accent: #e2f3ee;
+  --accent-foreground: #2c3149;
+  --destructive: #e07a85;
+  --border: #ede9f2;
+  --input: #f7f4fa;
+  --ring: #8e82cc;
+  --mint: #74cfbf;
+  --mint-soft: #b9e6dd;
+  --pink: #f6c9cc;
+  --pink-deep: #f0a8ac;
+  --blue-soft: #aec6e8;
+  --subtle: #a2a5b4;
+  --chart-1: #8e82cc;
+  --chart-2: #74cfbf;
+  --chart-3: #f0a8ac;
+  --chart-4: #aec6e8;
+  --chart-5: #f2d0a4;
+  --radius: 1rem;
+  --sidebar: #ffffff;
+  --sidebar-foreground: #2c3149;
+  --sidebar-primary: #8e82cc;
+  --sidebar-primary-foreground: #ffffff;
+  --sidebar-accent: #f7f4fa;
+  --sidebar-accent-foreground: #2c3149;
+  --sidebar-border: #ede9f2;
+  --sidebar-ring: #8e82cc;
 }
 
 .dark {
-  --background: oklch(0.145 0 0);
-  --foreground: oklch(0.985 0 0);
-  --card: oklch(0.205 0 0);
-  --card-foreground: oklch(0.985 0 0);
-  --popover: oklch(0.205 0 0);
-  --popover-foreground: oklch(0.985 0 0);
-  --primary: oklch(0.922 0 0);
-  --primary-foreground: oklch(0.205 0 0);
-  --secondary: oklch(0.269 0 0);
-  --secondary-foreground: oklch(0.985 0 0);
-  --muted: oklch(0.269 0 0);
-  --muted-foreground: oklch(0.708 0 0);
-  --accent: oklch(0.269 0 0);
-  --accent-foreground: oklch(0.985 0 0);
-  --destructive: oklch(0.704 0.191 22.216);
-  --border: oklch(1 0 0 / 10%);
-  --input: oklch(1 0 0 / 15%);
-  --ring: oklch(0.556 0 0);
-  --chart-1: oklch(0.87 0 0);
-  --chart-2: oklch(0.556 0 0);
-  --chart-3: oklch(0.439 0 0);
-  --chart-4: oklch(0.371 0 0);
-  --chart-5: oklch(0.269 0 0);
-  --sidebar: oklch(0.205 0 0);
-  --sidebar-foreground: oklch(0.985 0 0);
-  --sidebar-primary: oklch(0.488 0.243 264.376);
-  --sidebar-primary-foreground: oklch(0.985 0 0);
-  --sidebar-accent: oklch(0.269 0 0);
-  --sidebar-accent-foreground: oklch(0.985 0 0);
-  --sidebar-border: oklch(1 0 0 / 10%);
-  --sidebar-ring: oklch(0.556 0 0);
+  --background: #20233a;
+  --foreground: #eeedf7;
+  --card: #2a2e4a;
+  --card-foreground: #eeedf7;
+  --popover: #2a2e4a;
+  --popover-foreground: #eeedf7;
+  --primary: #a79be0;
+  --primary-foreground: #232640;
+  --primary-deep: #b8aeeb;
+  --secondary: #343858;
+  --secondary-foreground: #eeedf7;
+  --muted: #343858;
+  --muted-foreground: #a2a5b4;
+  --accent: #2e4a45;
+  --accent-foreground: #b9e6dd;
+  --destructive: #e88f98;
+  --border: rgb(255 255 255 / 0.09);
+  --input: #343858;
+  --ring: #a79be0;
+  --mint: #74cfbf;
+  --mint-soft: #35544e;
+  --pink: #f0a8ac;
+  --pink-deep: #e88f98;
+  --blue-soft: #93aed6;
+  --subtle: #8f92a6;
+  /* chart-1 diverges from --primary here: dark-surface data marks need more
+     chroma and less lightness to pass palette validation (#9583DB validated). */
+  --chart-1: #9583db;
+  --chart-2: #74cfbf;
+  --chart-3: #f0a8ac;
+  --chart-4: #93aed6;
+  --chart-5: #f2d0a4;
+  --sidebar: #2a2e4a;
+  --sidebar-foreground: #eeedf7;
+  --sidebar-primary: #a79be0;
+  --sidebar-primary-foreground: #232640;
+  --sidebar-accent: #343858;
+  --sidebar-accent-foreground: #eeedf7;
+  --sidebar-border: rgb(255 255 255 / 0.09);
+  --sidebar-ring: #a79be0;
 }
 
 @layer base {

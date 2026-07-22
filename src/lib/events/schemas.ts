@@ -7,7 +7,7 @@ import { z } from 'zod';
  * migration enum value, nothing else. See docs/ARCHITECTURE.md §2.
  */
 
-export const EVENT_KINDS = ['feed', 'sleep', 'diaper'] as const;
+export const EVENT_KINDS = ['feed', 'sleep', 'diaper', 'measure', 'vaccine'] as const;
 export type EventKind = (typeof EVENT_KINDS)[number];
 
 // ---------- per-kind details ----------
@@ -39,10 +39,26 @@ export type DiaperDetails = z.infer<typeof diaperDetailsSchema>;
 export const sleepDetailsSchema = z.object({}).strict();
 export type SleepDetails = z.infer<typeof sleepDetailsSchema>;
 
+// A weight measurement — the clinic scale, as an event. started_at is the
+// measurement date; more measurements (length, head) can join later.
+export const measureDetailsSchema = z.object({
+  weight_kg: z.number().positive().max(30),
+});
+export type MeasureDetails = z.infer<typeof measureDetailsSchema>;
+
+// A completed immunization visit. visit_id references the coach's schedule
+// (lib/guide/immunization.ts); started_at is the day the shots were given.
+export const vaccineDetailsSchema = z.object({
+  visit_id: z.string().min(1),
+});
+export type VaccineDetails = z.infer<typeof vaccineDetailsSchema>;
+
 export const detailsSchemaFor = {
   feed: feedDetailsSchema,
   sleep: sleepDetailsSchema,
   diaper: diaperDetailsSchema,
+  measure: measureDetailsSchema,
+  vaccine: vaccineDetailsSchema,
 } satisfies Record<EventKind, z.ZodTypeAny>;
 
 // ---------- the event row ----------
@@ -68,6 +84,8 @@ export const eventSchema = z.discriminatedUnion('kind', [
   baseEventSchema.extend({ kind: z.literal('feed'), details: feedDetailsSchema }),
   baseEventSchema.extend({ kind: z.literal('sleep'), details: sleepDetailsSchema }),
   baseEventSchema.extend({ kind: z.literal('diaper'), details: diaperDetailsSchema }),
+  baseEventSchema.extend({ kind: z.literal('measure'), details: measureDetailsSchema }),
+  baseEventSchema.extend({ kind: z.literal('vaccine'), details: vaccineDetailsSchema }),
 ]);
 export type WataEvent = z.infer<typeof eventSchema>;
 

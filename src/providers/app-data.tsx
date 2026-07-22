@@ -8,6 +8,7 @@ export interface Child {
   family_id: string;
   name: string;
   birth_date: string | null;
+  sex: 'male' | 'female' | 'other' | null;
 }
 
 interface AppData {
@@ -17,7 +18,8 @@ interface AppData {
   loading: boolean;
   selectedChild: Child | null;
   selectChild: (id: string) => void;
-  addChild: (name: string, birthDate?: string | null) => Promise<void>;
+  addChild: (name: string, birthDate?: string | null, sex?: Child['sex']) => Promise<void>;
+  updateChild: (id: string, patch: Partial<Pick<Child, 'name' | 'birth_date'>>) => Promise<void>;
 }
 
 const AppDataContext = createContext<AppData | null>(null);
@@ -54,7 +56,7 @@ export function AppDataProvider({
     if (fam) {
       const { data: rows } = await supabase
         .from('children')
-        .select('id, family_id, name, birth_date')
+        .select('id, family_id, name, birth_date, sex')
         .is('archived_at', null)
         .order('created_at', { ascending: true });
       setKids(rows ?? []);
@@ -83,18 +85,37 @@ export function AppDataProvider({
   }, []);
 
   const addChild = useCallback(
-    async (name: string, birthDate?: string | null) => {
+    async (name: string, birthDate?: string | null, sex?: Child['sex']) => {
       if (!familyId) throw new Error('No family yet');
       const { data, error } = await supabase
         .from('children')
-        .insert({ family_id: familyId, name: name.trim(), birth_date: birthDate ?? null })
-        .select('id, family_id, name, birth_date')
+        .insert({
+          family_id: familyId,
+          name: name.trim(),
+          birth_date: birthDate ?? null,
+          sex: sex ?? null,
+        })
+        .select('id, family_id, name, birth_date, sex')
         .single();
       if (error) throw new Error(error.message);
       setKids((prev) => [...prev, data]);
       selectChild(data.id);
     },
     [familyId, supabase, selectChild]
+  );
+
+  const updateChild = useCallback(
+    async (id: string, patch: Partial<Pick<Child, 'name' | 'birth_date'>>) => {
+      const { data, error } = await supabase
+        .from('children')
+        .update(patch)
+        .eq('id', id)
+        .select('id, family_id, name, birth_date, sex')
+        .single();
+      if (error) throw new Error(error.message);
+      setKids((prev) => prev.map((k) => (k.id === id ? data : k)));
+    },
+    [supabase]
   );
 
   const value = useMemo<AppData>(
@@ -106,8 +127,9 @@ export function AppDataProvider({
       selectedChild: kids.find((k) => k.id === selectedId) ?? null,
       selectChild,
       addChild,
+      updateChild,
     }),
-    [userId, familyId, kids, loading, selectedId, selectChild, addChild]
+    [userId, familyId, kids, loading, selectedId, selectChild, addChild, updateChild]
   );
 
   return <AppDataContext.Provider value={value}>{children}</AppDataContext.Provider>;

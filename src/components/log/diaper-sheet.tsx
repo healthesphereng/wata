@@ -12,23 +12,33 @@ import { Dialog, DialogContent, DialogHeader, DialogTitle } from '@/components/u
 
 type Contents = DiaperDetails['contents'];
 
-// Each type is one tap. Colours are muted (dark-first) hints, never the only
-// signal — the label carries the meaning for accessibility.
+// Each type is one tap. Colours are pastel tints, never the only signal —
+// the label carries the meaning for accessibility.
 const OPTIONS: { value: Contents; label: string; hint: string; className: string }[] = [
-  { value: 'wet', label: 'Wet', hint: 'Pee only', className: 'text-sky-300 border-sky-400/40' },
+  {
+    value: 'wet',
+    label: 'Wet',
+    hint: 'Pee only',
+    className: 'border-transparent bg-blue-soft/35 text-sky-500',
+  },
   {
     value: 'dirty',
     label: 'Dirty',
     hint: 'Poo only',
-    className: 'text-amber-300 border-amber-500/40',
+    className: 'border-transparent bg-pink/45 text-pink-deep',
   },
   {
     value: 'mixed',
     label: 'Mixed',
     hint: 'Both',
-    className: 'text-emerald-300 border-emerald-500/40',
+    className: 'border-transparent bg-mint-soft/60 text-mint',
   },
-  { value: 'dry', label: 'Dry', hint: 'Clean', className: 'text-muted-foreground border-border' },
+  {
+    value: 'dry',
+    label: 'Dry',
+    hint: 'Clean',
+    className: 'border-transparent bg-secondary text-subtle',
+  },
 ];
 
 export function DiaperSheet({

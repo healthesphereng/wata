@@ -15,7 +15,13 @@ import { Dialog, DialogContent, DialogHeader, DialogTitle } from '@/components/u
 const METHOD_LABEL = { breast: 'Breast', bottle: 'Bottle', pump: 'Pump' } as const;
 const SIDE_LABEL = { left: 'Left', right: 'Right', both: 'Both' } as const;
 const CONTENTS_LABEL = { wet: 'Wet', dirty: 'Dirty', mixed: 'Mixed', dry: 'Dry' } as const;
-const KIND_TITLE = { feed: 'Edit feed', diaper: 'Edit diaper', sleep: 'Edit sleep' } as const;
+const KIND_TITLE = {
+  feed: 'Edit feed',
+  diaper: 'Edit diaper',
+  sleep: 'Edit sleep',
+  measure: 'Weight entry',
+  vaccine: 'Vaccine record',
+} as const;
 
 function timeValue(iso: string): string {
   const d = new Date(iso);
@@ -201,6 +207,20 @@ function EditForm({ event, onClose }: { event: WataEvent; onClose: () => void })
         <Button onClick={saveDiaper} className="h-14 w-full text-lg">
           Save changes
         </Button>
+        <DeleteButton onDelete={remove} />
+      </>
+    );
+  }
+
+  // Guide-owned records: entered on the Coach page, so here they only delete.
+  if (event.kind === 'measure' || event.kind === 'vaccine') {
+    return (
+      <>
+        <p className="text-center text-sm text-muted-foreground">
+          {event.kind === 'measure'
+            ? 'Logged from the Coach. Delete it here and re-enter the weight there if it was wrong.'
+            : 'Marked done from the Coach. Delete it here if it was a mistake.'}
+        </p>
         <DeleteButton onDelete={remove} />
       </>
     );

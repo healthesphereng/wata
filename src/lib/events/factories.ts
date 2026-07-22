@@ -2,6 +2,8 @@ import {
   type DiaperDetails,
   type EventKind,
   type FeedDetails,
+  type MeasureDetails,
+  type VaccineDetails,
   type WataEvent,
   eventSchema,
 } from './schemas';
@@ -51,6 +53,34 @@ export function createDiaperEvent(
   return eventSchema.parse({
     ...b,
     kind: 'diaper',
+    ended_at: b.started_at,
+    details: input.details,
+  });
+}
+
+/** A weight measurement (instant event; started_at = measurement date). */
+export function createMeasureEvent(
+  input: NewEventBase & { details: MeasureDetails },
+  now: Date = new Date()
+): WataEvent {
+  const b = base(input, now);
+  return eventSchema.parse({
+    ...b,
+    kind: 'measure',
+    ended_at: b.started_at,
+    details: input.details,
+  });
+}
+
+/** A completed immunization visit (instant event; started_at = day given). */
+export function createVaccineEvent(
+  input: NewEventBase & { details: VaccineDetails },
+  now: Date = new Date()
+): WataEvent {
+  const b = base(input, now);
+  return eventSchema.parse({
+    ...b,
+    kind: 'vaccine',
     ended_at: b.started_at,
     details: input.details,
   });
@@ -106,4 +136,6 @@ export const KIND_LABELS: Record<EventKind, string> = {
   feed: 'Feed',
   sleep: 'Sleep',
   diaper: 'Diaper',
+  measure: 'Weight',
+  vaccine: 'Vaccines',
 };

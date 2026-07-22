@@ -1,6 +1,7 @@
 import { redirect } from 'next/navigation';
 import { createClient } from '@/lib/supabase/server';
 import { AppDataProvider } from '@/providers/app-data';
+import { AppNav } from '@/components/app/app-nav';
 import { ChildSwitcher } from '@/components/app/child-switcher';
 import { ThumbBar } from '@/components/app/thumb-bar';
 import { SignOutButton } from '@/components/auth/sign-out-button';
@@ -23,9 +24,12 @@ export default async function AppLayout({ children }: { children: React.ReactNod
   return (
     <AppDataProvider userId={user.id}>
       <div className="flex min-h-dvh flex-col bg-background text-foreground">
-        <header className="flex items-center justify-between border-b border-border px-4 py-3">
+        <header className="flex items-center justify-between gap-2 border-b border-border px-4 py-3">
           <ChildSwitcher />
-          <SignOutButton />
+          <div className="flex items-center gap-2">
+            <AppNav />
+            <SignOutButton />
+          </div>
         </header>
         <div className="flex flex-1 flex-col">{children}</div>
         <ThumbBar />
