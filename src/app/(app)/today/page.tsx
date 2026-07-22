@@ -7,6 +7,7 @@ import { useEvents } from '@/hooks/use-events';
 import { eventsForDay, summarizeDay } from '@/lib/events/today';
 import { type WataEvent } from '@/lib/events/schemas';
 import { AddChildDialog } from '@/components/app/add-child-dialog';
+import { VaccineDueBanner } from '@/components/guide/vaccine-due-banner';
 import { EventRow } from '@/components/timeline/event-row';
 import { RunningSleepCard } from '@/components/timeline/running-sleep-card';
 import { EditEventSheet } from '@/components/log/edit-event-sheet';
@@ -90,6 +91,10 @@ export default function TodayPage() {
   return (
     <div className="flex flex-1 flex-col gap-6 p-4">
       {summary.runningSleep && <RunningSleepCard event={summary.runningSleep} />}
+
+      {selectedChild?.birth_date && (
+        <VaccineDueBanner childId={selectedChild.id} birthDate={selectedChild.birth_date} />
+      )}
 
       <section aria-label="Today at a glance" className="grid grid-cols-3 gap-3">
         <StatTile icon={Milk} value={summary.feeds} label="feeds" tint="bg-primary/15 text-primary" />

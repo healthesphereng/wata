@@ -2,11 +2,12 @@
 
 import Link from 'next/link';
 import { usePathname } from 'next/navigation';
-import { Home, BookHeart } from 'lucide-react';
+import { Home, ChartColumn, BookHeart } from 'lucide-react';
 import { cn } from '@/lib/utils';
 
 const LINKS = [
   { href: '/today', label: 'Today', icon: Home },
+  { href: '/history', label: 'This week', icon: ChartColumn },
   { href: '/guide', label: 'Coach', icon: BookHeart },
 ] as const;
 
